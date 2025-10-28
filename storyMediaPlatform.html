@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivid Narrative - Animated Stories</title>
+    <style>
+        /* --- Google Fonts Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500&display=swap');
+
+        /* --- CSS Variables for a Luxurious Theme --- */
+        :root {
+            --background-dark: #0D0D10;
+            --container-dark: #1A1A1D;
+            --border-color: #25252A;
+            --text-primary: #EAEAEA;
+            --text-secondary: #999999;
+            --accent-gold: #A98F61;
+            --accent-gold-hover: #c0a676;
+            --font-serif: 'Lora', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        /* --- General Body & Reset Styling --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- Main Header / Navigation --- */
+        .main-header {
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--background-dark);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        .main-nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* --- Story Viewing Container --- */
+        .story-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* 2/3 for video, 1/3 for text */
+            gap: 40px;
+            width: 100%;
+            max-width: 1400px;
+            padding: 40px 5%;
+        }
+
+        /* --- Left Pane: Video and Story Info --- */
+        .video-pane {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-player-wrapper {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-player-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-meta {
+            margin-top: 30px;
+        }
+
+        .story-meta h1 {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .story-meta .author-info {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .story-meta .author-info a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .story-meta .author-info a:hover {
+            color: var(--accent-gold-hover);
+        }
+
+        /* --- Right Pane: The Story Text --- */
+        .text-pane {
+            background-color: var(--container-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            height: 75vh; /* Fixed height to allow internal scrolling */
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar for a sleek look */
+        .text-pane::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .text-pane::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .text-pane::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 20px;
+        }
+
+        .text-pane h2 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .story-content p {
+            font-size: 1.1rem;
+            line-height: 1.8; /* Generous line height for readability */
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        /* --- Footer --- */
+        .main-footer {
+            width: 100%;
+            text-align: center;
+            padding: 30px 5%;
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Navigation -->
+<header class="main-header">
+    <a href="#" class="logo">Vivid Narrative</a>
+    <nav class="main-nav">
+        <a href="#">Browse</a>
+        <a href="#">Community</a>
+        <a href="#">Write</a>
+    </nav>
+</header>
+
+<!-- Main Content: Story Page -->
+<main class="story-container">
+
+    <!-- Left Column for Video Player & Story Details -->
+    <section class="video-pane">
+        <div class="video-player-wrapper">
+            <!-- This is a placeholder. A real implementation would use a <video> tag or an <iframe> from a video service -->
+            <img src="https://images.pexels.com/photos/1648377/pexels-photo-1648377.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                 alt="Animated scene from the story">
+        </div>
+
+        <div class="story-meta">
+            <h1>The Clockwork Alchemist</h1>
+            <p class="author-info">By <a href="#">Elara Vance</a></p>
+        </div>
+    </section>
+
+    <!-- Right Column for Story Text -->
+    <article class="text-pane">
+        <h2>Chapter 1: The Brass Heart</h2>
+        <div class="story-content">
+            <p>The rain fell on the cobblestone streets of Aeridor with a relentless rhythm, each drop a tiny hammer
+                against the city's metallic soul. From his workshop window, Kaelen watched the steam rise from the
+                grates below, a ghostly dance in the amber glow of the gas lamps. His hands, stained with oil and marked
+                by burns, rested on a contraption of brass and copper that lay silent on his workbench.</p>
+            <p>It was a heart. Not of flesh and blood, but of gears and springs, designed to beat with a precision no
+                mortal heart could match. For weeks, he had toiled, fueled by dwindling funds and an even more rapidly
+                dwindling hope. The city’s elite demanded wonders, and he was but one of many artificers vying for their
+                patronage.</p>
+            <p>A soft chime echoed from the corner of the room. It was the chronometer, signaling the turn of the hour.
+                Time. It was always about time in Aeridor. Time was a currency, a measure of worth. And his was running
+                out.</p>
+            <p>He picked up a miniature screwdriver, its handle worn smooth from use, and made a final, delicate
+                adjustment to the escapement wheel within the brass heart. With a soft click, it whirred to life. A
+                steady, rhythmic ticking filled the silence of the workshop, a sound more beautiful to Kaelen than any
+                symphony.</p>
+            <p>This, he thought, was more than just a commission. It was his masterpiece. It was proof that even in a
+                city of cold metal, a heart of brass could hold a spark of life.</p>
+        </div>
+    </article>
+
+</main>
+
+<!-- Page Footer -->
+<footer class="main-footer">
+    <p>&copy; 2025 Vivid Narrative. Experience stories like never before.</p>
+</footer>
+
+</body>
+</html>```

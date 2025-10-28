@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | Jedidiah Ajisafe</title>
+
+    <!-- Preload project images that might be visible on larger screens -->
+    <link rel="preload" href="ToDoApp.png" as="image">
+    <link rel="preload" href="book-cover.jpg" as="image">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap"
+          rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <style>
+        /* --- Base & Typography --- */
+        :root {
+            --gold: #C6A662;
+            --blood-red: #660000;
+            --text-grey: #a0a0a0;
+            --bg-dark: #0a0a0a;
+            --bg-black: #000;
+            --border-light: rgba(198, 166, 98, 0.3);
+            --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-grey);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: fadePageIn 1.5s ease forwards;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.98) 100%),
+            url('https://www.transparenttextures.com/patterns/dark-matter.png');
+            background-attachment: fixed;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            padding: 4rem 1.5rem 2.5rem;
+            background: linear-gradient(180deg, #111, var(--bg-black));
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 6vw, 2.5rem);
+            margin-bottom: 0.625rem;
+        }
+
+        header p {
+            font-size: 1rem;
+        }
+
+        /* --- Timeline --- */
+        .timeline {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 0 1.5rem 5rem;
+            position: relative;
+            background: linear-gradient(to bottom, transparent, var(--bg-dark) 90%);
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--blood-red), var(--gold));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 1.25rem 2.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards;
+            will-change: opacity, transform;
+        }
+
+        .timeline-item.left {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item.right {
+            left: 50%;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            top: 25px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--blood-red);
+            border: 2px solid var(--gold);
+            z-index: 1;
+        }
+
+        .timeline-item.left::before {
+            right: -10px;
+        }
+
+        .timeline-item.right::before {
+            left: -10px;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.3rem;
+        }
+
+        .timeline-item p {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.6s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.9s; }
+        .timeline-item:nth-child(4) { animation-delay: 1.2s; }
+
+        /* --- Projects Section --- */
+        .projects {
+            padding: 5rem 1.5rem;
+            text-align: center;
+            background: linear-gradient(to bottom, var(--bg-dark), var(--bg-dark), transparent);
+        }
+
+        .projects-header h2 {
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.625rem;
+        }
+
+        .projects-header p {
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            justify-items: center;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .project-card {
+            background: #111;
+            border: 1px solid rgba(198, 166, 98, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: left;
+            width: 100%;
+            transition: transform 0.5s var(--easing), box-shadow 0.5s var(--easing), border-color 0.5s ease;
+            will-change: transform, box-shadow, border-color;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            border-color: var(--gold);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover img {
+            opacity: 1;
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.625rem;
+        }
+
+        .project-info p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .project-link {
+            color: var(--gold);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: #fff;
+        }
+
+        /* --- Contact Section --- */
+        .contact-section {
+            text-align: center;
+            padding: 5rem 1.5rem 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+        }
+
+        .contact-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.25rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.625rem;
+        }
+
+        .contact-section a {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.875rem;
+            background-color: var(--blood-red);
+            color: #fff;
+            border-radius: 5px;
+            border: 1px solid var(--blood-red);
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.4s var(--easing), box-shadow 0.4s ease, background-color 0.3s ease, color 0.3s ease;
+            will-change: transform, box-shadow, background-color, color;
+        }
+
+        .contact-section a:hover {
+            background-color: transparent;
+            color: var(--blood-red);
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(102, 0, 0, 0.5);
+        }
+
+        /* Shimmering Underline Effect */
+        .projects-header h2::after,
+        .contact-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transform: translateX(-50%);
+            animation: expandLine 2s ease-out 0.5s forwards;
+            will-change: width;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+            padding: 2.5rem 1.25rem;
+            border-top: 1px solid rgba(198, 166, 98, 0.1);
+        }
+
+        .footer-nav {
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: darkred;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--gold);
+        }
+
+        /* --- Scroll-to-Top Button --- */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(198, 166, 98, 0.1);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-size: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+            cursor: pointer;
+            will-change: opacity, visibility, transform;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top:hover {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+
+        /* --- Keyframe Animations --- */
+        @keyframes fadePageIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes expandLine {
+            to { width: 80%; }
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 600px) {
+            .timeline::before {
+                left: 30px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 20px;
+            }
+            .timeline-item.left, .timeline-item.right {
+                left: 0;
+                text-align: left;
+            }
+            .timeline-item.left::before, .timeline-item.right::before {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>About Me</h1>
+    <p>A journey through education and growth</p>
+</header>
+
+<main>
+    <section class="timeline">
+        <div class="timeline-item left">
+            <h3>Foursquare Academy</h3>
+            <p>Nursery and Pre-primary Education</p>
+        </div>
+        <div class="timeline-item right">
+            <h3>ECWA Plateau Christian Academy</h3>
+            <p>Primary 1 – 5 | Graduated in 2016</p>
+        </div>
+        <div class="timeline-item left">
+            <h3>Baptist High School, Jos</h3>
+            <p>Completed Secondary Education | 2016 – 2022</p>
+        </div>
+        <div class="timeline-item right">
+            <h3>Covenant University</h3>
+            <p>Bachelor’s Degree Program | 2022 – Present</p>
+        </div>
+    </section>
+
+    <section class="projects">
+        <div class="projects-header">
+            <h2>Projects & Creations</h2>
+            <p>Every project tells a story — a blend of code, design, and vision.</p>
+        </div>
+        <div class="project-grid">
+            <div class="project-card">
+                <img src="ToDoApp.png" alt="ToDo App Project Snapshot" loading="lazy" width="393" height="203">
+                <div class="project-info">
+                    <h3>ToDo App</h3>
+                    <p>A peak to give the best project management with refined elegance.</p>
+                    <a href="https://github.com/Emerald-dee" class="project-link" target="_blank" rel="noopener">View Code →</a>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="book-cover.jpg" alt="Two Sides of Eternity Book Cover" loading="lazy" width="256" height="400">
+                <div class="project-info">
+                    <h3>Two Sides of Eternity</h3>
+                    <p>A book of challenge to conventional thinking, fit with its own world. Read it if you dare.</p>
+                    <a href="book.html" class="project-link">Find Out More →</a>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="ui%20redesign.png" alt="UI/UX Redesign Project Snapshot" loading="lazy" width="1287" height="664">
+                <div class="project-info">
+                    <h3>Fully Interactive UI/UX Redesign</h3>
+                    <p>An implementation of newly learned UI/UX skills to bring a generic design to speak design language.</p>
+                    <a href="https://github.com/Emerald-dee" class="project-link" target="_blank" rel="noopener">View Code →</a>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="storyMediaPlatform.png" alt="Story Media Platform UI/UX Project Snapshot" loading="lazy" width="1325" height="652">
+                <div class="project-info">
+                    <h3>Story Media Platform UI/UX</h3>
+                    <p>A conceptual redesign of a popular story-sharing platform with a focus on user experience.</p>
+                    <a href="https://github.com/Emerald-dee" class="project-link" target="_blank" rel="noopener">View Code →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <h2>Get In Touch</h2>
+        <p>Have a peak into what I am working on.</p>
+        <a href="blog.html">BLOG</a>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-nav">
+        <a href="personal portfoilo.html">HOME</a>
+    </div>
+    <small>&copy; 2025 Jedidiah Ajisafe — All Rights Reserved.</small>
+</footer>
+
+<button class="scroll-to-top" aria-label="Scroll to top" title="Scroll to top">↑</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const scrollTopBtn = document.querySelector('.scroll-to-top');
+
+        if (scrollTopBtn) {
+            const toggleVisibility = () => {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            };
+
+            const scrollToTop = () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            };
+
+            window.addEventListener('scroll', toggleVisibility, { passive: true });
+            scrollTopBtn.addEventListener('click', scrollToTop);
+        }
+    });
+</script>
+
+</body>
+</html>

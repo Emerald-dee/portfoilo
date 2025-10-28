@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Jedidiah Ajisafe — Portfolio</title>
+
+    <!-- Preload critical above-the-fold images -->
+    <link rel="preload" href="my%20profile.jpg" as="image">
+    <link rel="preload" href="book.png" as="image">
+
+    <!-- Fonts & icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --crimson: #8B0000;
+            --gold: #C6A662;
+            --black: #000000;
+            --text: #9a9a9a;
+            --muted: rgba(198, 166, 98, 0.12);
+            --easing: cubic-bezier(.22, .9, .3, 1);
+        }
+
+        /* RESET */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(180deg, #030303 0%, #080202 55%, #0d0202 100%);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            line-height: 1.55;
+            opacity: 0;
+            animation: pageLoadAnimation 1s var(--easing) forwards;
+        }
+
+        /* PAGE CONTAINER */
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 2.25rem 1.5rem 5rem;
+            transition: opacity 700ms var(--easing), filter 700ms var(--easing), transform 700ms var(--easing);
+        }
+
+        .container.fade-out-transition {
+            opacity: 0;
+            filter: blur(5px);
+            transform: scale(0.98);
+        }
+
+        /* HEADER / HERO */
+        header {
+            position: relative;
+            padding: 3.5rem 0 2.25rem;
+            text-align: center;
+            will-change: transform;
+        }
+
+        .hero-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.25rem;
+            flex-wrap: wrap;
+        }
+
+        .enter-world-tome {
+            cursor: pointer;
+            width: 70px;
+            height: auto;
+            display: block;
+            margin: 1.25rem 0 0 0.3125rem;
+            position: relative;
+            filter: brightness(1.05) contrast(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7),
+            0 5px 15px rgba(198, 166, 98, 0.15),
+            inset 0 1px 3px rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            animation: breathingTome 4.5s infinite ease-in-out;
+            transition: transform 500ms var(--easing), box-shadow 500ms var(--easing), filter 500ms var(--easing);
+            will-change: transform, box-shadow, filter;
+        }
+
+        .enter-world-tome:hover {
+            transform: translateY(-8px) scale(1.05);
+            filter: brightness(1.15) contrast(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6),
+            0 10px 30px rgba(198, 166, 98, 0.25);
+            animation-play-state: paused;
+        }
+
+        @keyframes breathingTome {
+            0%, 100% {
+                transform: translateY(0);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7),
+                0 5px 15px rgba(198, 166, 98, 0.15),
+                inset 0 1px 3px rgba(255, 255, 255, 0.03);
+            }
+            50% {
+                transform: translateY(-4px);
+                box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7),
+                0 7px 20px rgba(198, 166, 98, 0.2),
+                inset 0 1px 3px rgba(255, 255, 255, 0.03);
+            }
+        }
+
+        .enter-world-tome.swallow-screen {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: 3000;
+            animation: expandAndSwallow 1.5s forwards ease-in-out;
+        }
+
+        @keyframes expandAndSwallow {
+            to {
+                transform: translate(-50%, -50%) scale(50);
+                opacity: 0;
+            }
+        }
+
+        .intro {
+            max-width: 620px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: var(--text);
+            border: 1px solid var(--muted);
+            padding: 0.375rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.125rem;
+            background: linear-gradient(180deg, rgba(198, 166, 98, 0.02), transparent);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) inset;
+        }
+
+        h1 {
+            font-family: "Playfair Display", serif;
+            font-weight: 600;
+            font-size: clamp(1.9rem, 5vw, 2.6rem);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            color: var(--crimson);
+            background: linear-gradient(90deg, var(--crimson), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.lead {
+            margin-top: 0.375rem;
+            color: var(--text);
+            font-size: 1.02rem;
+            max-width: 610px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+        }
+
+        .profile-frame {
+            width: 260px;
+            height: 340px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #0b0b0b 0%, #150504 100%);
+            border: 2px solid rgba(198, 166, 98, 0.16);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6),
+            0 0 24px rgba(139, 0, 0, 0.06) inset;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 700ms var(--easing), box-shadow 700ms var(--easing);
+            will-change: transform, box-shadow;
+        }
+
+        .profile-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 900ms var(--easing), filter 500ms var(--easing);
+            filter: contrast(1.02) saturate(0.95);
+        }
+
+        .profile-frame:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(139, 0, 0, 0.08);
+        }
+
+        .profile-frame:hover img {
+            transform: scale(1.03);
+            filter: brightness(1.02);
+        }
+
+        /* NAV */
+        nav {
+            margin: 1.75rem auto 0;
+            display: flex;
+            gap: 1.125rem;
+            justify-content: center;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.55);
+            padding: 0.625rem 1.125rem;
+            border-radius: 999px;
+            border: 1px solid rgba(198, 166, 98, 0.08);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+            width: fit-content;
+        }
+
+        nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 0.5rem 0.875rem;
+            border-radius: 999px;
+            transition: all 280ms var(--easing);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        nav a:hover {
+            background: linear-gradient(90deg, rgba(139, 0, 0, 0.14), rgba(198, 166, 98, 0.08));
+            color: var(--text);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+        }
+
+        .section {
+            margin-top: 2.5rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.00));
+            border-radius: 14px;
+            padding: 2.125rem;
+            border: 1px solid rgba(198, 166, 98, 0.06);
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 600ms var(--easing), transform 600ms var(--easing);
+            will-change: opacity, transform;
+        }
+
+        .section.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-family: "Playfair Display", serif;
+            color: var(--gold);
+            margin-bottom: 1.125rem;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.00));
+            border-radius: 12px;
+            padding: 1.25rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid rgba(198, 166, 98, 0.06);
+            transition: transform 420ms var(--easing), box-shadow 420ms var(--easing);
+            will-change: transform, box-shadow;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(198, 166, 98, 0.04);
+        }
+
+        .card h3 {
+            font-family: "Playfair Display", serif;
+            color: var(--gold);
+            margin-bottom: 0.625rem;
+            font-size: 1.15rem;
+        }
+
+        .card p {
+            color: var(--text);
+            font-size: 0.98rem;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid rgba(198, 166, 98, 0.14);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            display: block;
+            margin-bottom: 0.875rem;
+            background-color: #0b0b0b;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.625rem 1.125rem;
+            background: linear-gradient(90deg, var(--crimson), rgba(198, 166, 98, 0.12));
+            color: #f7f5f2;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(198, 166, 98, 0.12);
+            transition: transform 300ms var(--easing), box-shadow 300ms var(--easing);
+            will-change: transform, box-shadow;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 30px rgba(198, 166, 98, 0.05);
+        }
+
+        .youtube-pill {
+            display: inline-flex;
+            gap: 0.625rem;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: linear-gradient(90deg, #a00, #c00);
+            color: #fff;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 8px 30px rgba(170, 0, 0, 0.18);
+            border: 1px solid rgba(0, 0, 0, 0.25);
+            transition: transform 300ms var(--easing), box-shadow 300ms var(--easing);
+            will-change: transform, box-shadow;
+        }
+
+        .youtube-pill:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(200, 0, 0, 0.28);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.625rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: linear-gradient(180deg, rgba(139, 0, 0, 0.12), rgba(0, 0, 0, 0.02));
+            color: var(--text);
+            padding: 0.5rem 0.875rem;
+            border-radius: 999px;
+            border: 1px solid rgba(198, 166, 98, 0.06);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .enter-world-icon {
+            cursor: pointer;
+            width: 80px;
+            height: auto;
+            display: block;
+            margin-top: 1.125rem;
+            filter: drop-shadow(0 0 15px rgba(198, 166, 98, 0.3));
+            animation: faintPulse 4s infinite ease-in-out;
+            transition: transform 0.4s var(--easing), filter 0.4s var(--easing);
+            transform-origin: center;
+            will-change: transform, filter;
+        }
+
+        .enter-world-icon:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 25px rgba(198, 166, 98, 0.5));
+            animation-play-state: paused;
+        }
+
+        @keyframes faintPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1.03);
+                opacity: 1;
+            }
+        }
+
+        footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.95rem;
+            padding: 1.875rem 0 5.625rem;
+        }
+
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(198, 166, 98, 0.1);
+            color: var(--crimson);
+            border: 1px solid var(--crimson);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-size: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+            cursor: pointer;
+            will-change: opacity, visibility, transform;
+        }
+
+        #scrollToTopBtn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #scrollToTopBtn:hover {
+            background: var(--crimson);
+            color: #030303;
+        }
+
+        @media (max-width: 980px) {
+            .hero-inner {
+                gap: 1.125rem;
+                padding: 0 0.625rem;
+            }
+
+            .profile-frame {
+                width: 220px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+             .hero-inner {
+                flex-direction: column-reverse; /* Stack profile pic on top on mobile */
+            }
+        }
+
+        @media (max-width: 600px) {
+            .book-cover {
+                height: 260px;
+            }
+        }
+
+        @keyframes pageLoadAnimation {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .intro > *,
+        .profile-frame {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: itemFadeInUp 900ms var(--easing) forwards;
+            will-change: opacity, transform;
+        }
+
+        .intro .eyebrow { animation-delay: 0.5s; }
+        .intro h1 { animation-delay: 0.7s; }
+        .intro p { animation-delay: 0.9s; }
+        .intro nav { animation-delay: 1.1s; }
+        .profile-frame { animation-delay: 0.8s; }
+
+        @keyframes itemFadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .action-prompt {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            color: var(--text);
+            font-weight: 400;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .action-prompt .animated-arrow {
+            width: 50px;
+            height: 1px;
+            background-color: var(--text);
+            position: relative;
+            animation: nudge-arrow 2.5s infinite ease-in-out;
+            will-change: transform, opacity;
+        }
+
+        .action-prompt .animated-arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 9px;
+            height: 9px;
+            border-top: 1px solid var(--text);
+            border-right: 1px solid var(--text);
+            transform: rotate(45deg);
+        }
+
+        @keyframes nudge-arrow {
+            0%, 100% {
+                transform: translateX(0);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateX(10px);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header id="hero">
+        <div class="hero-inner">
+            <div class="intro">
+                <div class="eyebrow">Jedidiah Ajisafe Toluwabori</div>
+                <h1>Purpose. Discipline. Legacy.</h1>
+                <p class="lead">Developer | Writer | Creative Technologist</p>
+                <p>I build elegant systems and stories that hold their weight. Subtle by design, precise by intent.</p>
+                <nav aria-label="Primary">
+                    <a href="#about">About</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#writing">Writing</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+            </div>
+
+            <div class="profile-frame">
+                <img src="my%20profile.jpg" alt="Jedidiah Ajisafe portrait" width="260" height="340">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="about" class="section">
+            <h2>About Me</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Who I am</h3>
+                    <p>I build, write, and design with precision. My work blends logic and artistry — code that
+                        breathes, words that move, and design that breathes admiration; excellence in execution.</p>
+                    <a class="btn" href="about.html">More Information</a>
+                </div>
+
+                <div class="card">
+                    <h3>Signature</h3>
+                    <p>Precision is not an act - it's instinct.</p>
+                    <p>Design is not appearance - it's conviction shaped in silence.</p>
+                    <p>Every line, every choice, every color - deliberate.</p>
+                    <div style="margin-top:12px;">
+                        <span class="tag">Brand: Purpose. Discipline. Legacy</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills" class="section">
+            <h2>Technical Skills</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Mobile Development</h3>
+                    <p>Kotlin & Java — robust Android architectures, clean separation of concerns, modern UX
+                        patterns.</p>
+                    <a class="btn" href="https://github.com/Emerald-dee" target="_blank" rel="noopener">View GitHub</a>
+                </div>
+
+                <div class="card">
+                    <h3>Web Development</h3>
+                    <p>Enterprise & frontend: C#, .NET, modern JS, progressive and accessible interfaces with
+                        design-first thinking.</p>
+                    <a class="btn" href="https://github.com/Emerald-dee" target="_blank" rel="noopener">View GitHub</a>
+                </div>
+
+                <div class="card">
+                    <h3>Animation & UI</h3>
+                    <p>Motion design, UI micro-interactions, animation for narrative - refined, purposeful,
+                        cinematic.</p>
+                    <div style="margin-top:14px; display:flex; gap:12px; align-items:center;">
+                        <a class="youtube-pill" href="https://www.youtube.com/@EmeraldDee" target="_blank"
+                           rel="noopener">
+                            <i class="fab fa-youtube"></i> Channel
+                        </a>
+                        <span style="color:var(--text); font-size:0.95rem;">Explore motion reels & process videos</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top:28px; color:var(--gold);">Technologies</h3>
+            <div class="tags" role="list">
+                <span class="tag">Kotlin</span>
+                <span class="tag">Java</span>
+                <span class="tag">C#</span>
+                <span class="tag">.NET</span>
+                <span class="tag">ASP.NET MVC</span>
+                <span class="tag">Animations</span>
+                <span class="tag">Android</span>
+                <span class="tag">HTML</span>
+                <span class="tag">Javascript</span>
+                <span class="tag">CSS</span>
+            </div>
+        </section>
+
+        <!-- WRITING / BOOK -->
+        <section id="writing" class="section">
+            <h2>Creative Writing</h2>
+            <div class="grid">
+                <div class="card">
+                    <img class="book-cover" src="book-cover.jpg" alt="Two Sides of Eternity — book cover" loading="lazy" width="260" height="360">
+                    <h3>Two Sides of Eternity</h3>
+                    <p>Dark fantasy exploring grief, forbidden hope, and the cost of power. A morally grey narrative that lingers.</p>
+                    <button class="action-prompt">
+                        <span>Enter the World</span>
+                        <div class="animated-arrow"></div>
+                    </button>
+                </div>
+                <div class="card">
+                    <h3>Excerpts & About</h3>
+                    <p>Sigurd lost everything the day the cursed shell was found. His wife Alicia lies in an endless
+                        sleep, his daughter Linnea was claimed by a word the world itself could not hold, and his spirit
+                        teeters on the edge of breaking.</p>
+                    <p>But in the Silver Plains, where eternal mist coils and shadows whisper, the truth of that day
+                        waits to be uncovered. The shell is not merely a relic-it is a key, a prison, a question the world
+                        itself cannot answer.</p>
+                    <p>Who is the real villain-the fallen, the faithful, or the broken?</p>
+                    <div style="margin-top:18px;" class="enter-world-icon">
+                        <img src="book.png" alt="Enter the World of the Book" class="enter-world-tome" data-href="book.html" width="80" height="80">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="section">
+            <h2>Get In Touch</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Professional Enquiries</h3>
+                    <p style="margin-bottom:12px;">If your project needs discipline, refinement, and quality — reach out.</p>
+                    <a class="btn" href="mailto:jetajisafe57@gmail.com">Email Me</a>
+                </div>
+
+                <div class="card">
+                    <h3>Connect</h3>
+                    <p style="margin-bottom:12px;">LinkedIn & other professional platforms for conversations and
+                        opportunities.</p>
+                    <a class="btn" href="https://www.linkedin.com/" target="_blank" rel="noopener"><i
+                            class="fab fa-linkedin"></i>&nbsp;LinkedIn</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <small>&copy; 2025 Jedidiah Ajisafe - Crafted with precision and intent.</small>
+    </footer>
+</div>
+<button id="scrollToTopBtn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const hero = document.getElementById('hero');
+        const sections = document.querySelectorAll('.section');
+        const profileFrame = document.querySelector('.profile-frame');
+        const enterWorldTome = document.querySelector('.enter-world-tome');
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        const writingSection = document.getElementById('writing');
+
+        // Hero parallax scroll effect
+        if (hero) {
+            const onScroll = () => {
+                const scrollY = window.scrollY;
+                const offset = Math.min(60, scrollY * 0.08);
+                hero.style.transform = `translateY(${offset}px)`;
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll(); // Initial call
+        }
+
+        // Section intersection observer for fade-in effect
+        if (sections.length) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target); // Stop observing after animation
+                    }
+                });
+            }, { threshold: 0.12 });
+            sections.forEach(section => observer.observe(section));
+        }
+
+        // Profile frame mouse move effect for larger screens
+        if (profileFrame && window.matchMedia('(min-width: 721px)').matches) {
+            const onMouseMove = (e) => {
+                const rect = profileFrame.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const deltaX = (e.clientX - centerX) / rect.width;
+                const deltaY = (e.clientY - centerY) / rect.height;
+                profileFrame.style.transform = `translateY(${-6 - deltaY * 6}px) rotateX(${deltaY * 3}deg) rotateY(${deltaX * 6}deg) scale(1.01)`;
+            };
+            const onMouseLeave = () => {
+                profileFrame.style.transform = '';
+            };
+            profileFrame.addEventListener('mousemove', onMouseMove);
+            profileFrame.addEventListener('mouseleave', onMouseLeave);
+        }
+
+        // Book icon click animation and navigation
+        const triggerPageTransition = (tomeElement) => {
+            const href = tomeElement.dataset.href;
+            if (!href) return;
+
+            document.querySelector('.container').classList.add('fade-out-transition');
+
+            const rect = tomeElement.getBoundingClientRect();
+            const top = rect.top + (rect.height / 2);
+            const left = rect.left + (rect.width / 2);
+
+            const animatedTome = tomeElement.cloneNode(true);
+            animatedTome.style.position = 'fixed';
+            animatedTome.style.top = `${top}px`;
+            animatedTome.style.left = `${left}px`;
+            animatedTome.style.margin = '0';
+            animatedTome.style.transform = 'translate(-50%, -50%)';
+
+            document.body.appendChild(animatedTome);
+            tomeElement.style.opacity = '0';
+            animatedTome.classList.add('swallow-screen');
+
+            setTimeout(() => {
+                window.location.href = href;
+            }, 1500);
+        };
+
+        if (enterWorldTome) {
+            enterWorldTome.addEventListener('click', (e) => {
+                e.preventDefault();
+                triggerPageTransition(enterWorldTome);
+            });
+        }
+
+        // Action prompt triggers the book icon click
+        if (writingSection) {
+            const actionPrompt = writingSection.querySelector('.action-prompt');
+            if (actionPrompt && enterWorldTome) {
+                actionPrompt.addEventListener('click', () => {
+                    triggerPageTransition(enterWorldTome);
+                });
+            }
+        }
+
+        // Scroll-to-top button functionality
+        if (scrollToTopBtn) {
+            const toggleVisibility = () => {
+                scrollToTopBtn.classList.toggle('visible', window.scrollY > 400);
+            };
+            const scrollToTop = () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            window.addEventListener('scroll', toggleVisibility, { passive: true });
+            scrollToTopBtn.addEventListener('click', scrollToTop);
+        }
+    });
+
+    // Handle browser back/forward navigation (bf-cache)
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            const container = document.querySelector('.container');
+            if (container) {
+                container.classList.remove('fade-out-transition');
+            }
+            const enterWorldTome = document.querySelector('.enter-world-tome');
+            if (enterWorldTome) {
+                enterWorldTome.style.opacity = '1';
+            }
+            const animatedClone = document.querySelector('.swallow-screen');
+            if (animatedClone) {
+                animatedClone.remove();
+            }
+        }
+    });
+</script>
+</body>
+</html>

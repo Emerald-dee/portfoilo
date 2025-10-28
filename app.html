@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elysian Tasks - Your Luxurious To-Do App</title>
+    <style>
+        /* CSS for a Luxurious Look and Feel */
+
+        /* --- General Styling & Typography --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --background-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --primary-gold: #D4AF37;
+            --dark-gold: #b89a31;
+            --container-bg: #222222;
+            --border-color: #2c2c2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 50px;
+        }
+
+        /* --- Main App Container --- */
+        .todo-app-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--container-bg);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-gold);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            font-weight: 300;
+        }
+
+        /* --- New Task Form --- */
+        .new-task-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .new-task-input {
+            flex-grow: 1;
+            padding: 15px;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .new-task-input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .add-task-button {
+            padding: 15px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: var(--primary-gold);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-task-button:hover {
+            background-color: var(--dark-gold);
+        }
+
+        /* --- Task List --- */
+        .task-list-container h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--primary-gold);
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 5px;
+            border-bottom: 1px solid var(--border-color);
+            transition: opacity 0.3s ease;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item input[type="checkbox"] {
+           margin-right: 15px;
+           width: 20px;
+           height: 20px;
+           accent-color: var(--primary-gold);
+           cursor: pointer;
+        }
+
+        .task-item .task-text {
+            flex-grow: 1;
+            font-size: 1rem;
+        }
+
+        /* Style for completed tasks */
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-color);
+            opacity: 0.5;
+            font-size: 0.875rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="todo-app-container">
+
+        <!-- App Header -->
+        <header>
+            <h1>Elysian Tasks</h1>
+            <p>Achieve your goals with elegance.</p>
+        </header>
+
+        <main>
+            <!-- New Task Input Form -->
+            <section class="new-task-form">
+                <input type="text" class="new-task-input" placeholder="Add a new majestic task...">
+                <button class="add-task-button">Add</button>
+            </section>
+
+            <!-- Task List -->
+            <section class="task-list-container">
+                <h2>Your Agenda</h2>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" id="task1">
+                        <label for="task1" class="task-text">Design the initial prototype for the new project</label>
+                    </li>
+                    <li class="task-item completed">
+                        <input type="checkbox" id="task2" checked>
+                        <label for="task2" class="task-text">Schedule the quarterly review meeting</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" id="task3">
+                        <label for="task3" class="task-text">Finalize the marketing budget for Q4</label>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" id="task4">
+                        <label for="task4" class="task-text">Book a reservation for the client dinner</label>
+                    </li>
+                </ul>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 Elysian Tasks. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

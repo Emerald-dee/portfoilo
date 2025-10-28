@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- This meta tag redirects to your portfolio after 3 seconds -->
+    <meta http-equiv="refresh" content="3;url=personal portfoilo.html">
+
+    <title>Jedidiah Ajisafe — Loading...</title>
+    <style>
+        :root {
+            --crimson: #9B1C1C;
+            --gold: #D4AF37;
+            --black: #111111;
+            --easing: cubic-bezier(.22, .9, .3, 1);
+        }
+
+        /* Basic Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--black);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            opacity: 1;
+            /* Animation to fade out the page before redirecting */
+            /* Starts after 2s, lasts 1s, and stays at the final state (opacity: 0) */
+            animation: fadeOutLoader 1s var(--easing) 2s forwards;
+        }
+
+        .loader-icon {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            transform-style: preserve-3d;
+            animation: rotate-loader 6s infinite linear;
+        }
+
+        .loader-part {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid;
+            border-radius: 50%;
+        }
+
+        .part-1 {
+            border-color: var(--gold) transparent transparent transparent;
+            animation: rotate-part-1 1.5s infinite var(--easing);
+        }
+
+        .part-2 {
+            border-color: transparent var(--crimson) transparent transparent;
+            animation: rotate-part-2 1.5s infinite var(--easing);
+            transform: rotate(120deg);
+        }
+
+        .part-3 {
+            border-color: transparent transparent var(--gold) transparent;
+            animation: rotate-part-3 1.5s infinite var(--easing);
+            transform: rotate(240deg);
+        }
+
+        /* Keyframes for the loader rotation */
+        @keyframes rotate-loader {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes rotate-part-1 {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes rotate-part-2 {
+            0% { transform: rotate(120deg); }
+            100% { transform: rotate(480deg); }
+        }
+        @keyframes rotate-part-3 {
+            0% { transform: rotate(240deg); }
+            100% { transform: rotate(600deg); }
+        }
+
+        /* Keyframe to fade out the entire page before redirect */
+        @keyframes fadeOutLoader {
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- The Loader Icon -->
+    <div class="loader-icon">
+        <div class="loader-part part-1"></div>
+        <div class="loader-part part-2"></div>
+        <div class="loader-part part-3"></div>
+    </div>
+</body>
+</html>
