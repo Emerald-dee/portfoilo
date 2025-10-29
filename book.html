@@ -66,7 +66,7 @@
             0 0 20px rgba(198, 166, 98, 0.1),
             0 0 45px rgba(122, 0, 0, 0.1);
             transition: transform 400ms var(--ease), box-shadow 400ms var(--ease);
-             will-change: transform, box-shadow;
+            will-change: transform, box-shadow;
         }
 
         .book-cover-image:hover {
@@ -80,7 +80,13 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            cursor: none !important;
+        }
+
+        /* Hide native cursor ONLY on devices that can hover (i.e., non-touch) */
+        @media (hover: hover) and (pointer: fine) {
+            body {
+                cursor: none !important;
+            }
         }
 
         html {
@@ -226,7 +232,7 @@
             justify-self: center;
             /*transform: translateX(-50%);*/
             transition: all 300ms var(--ease);
-             will-change: transform, box-shadow, border;
+            will-change: transform, box-shadow, border;
         }
 
 
@@ -688,6 +694,104 @@
             }
         }
 
+
+        @media (max-width: 1024px) {
+            .container {
+                /* Reduce horizontal padding on tablets */
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .book-wrapper {
+                /* Switch to a single-column layout */
+                grid-template-columns: 1fr;
+                gap: 48px; /* Increase the gap between the excerpt and the book */
+                padding: 0 20px;
+            }
+
+            .excerpt {
+                /* Center the excerpt text when in a single column */
+                text-align: center;
+            }
+
+            .excerpt p {
+                /* Justify text looks better on larger screens, but can be awkward on tablets */
+                text-align: left;
+            }
+
+            h1 {
+                /* Slightly reduce the main title font size for better fit */
+                font-size: 2.4rem;
+            }
+
+            .vision-title {
+                font-size: 2rem;
+            }
+
+            .vision-text {
+                font-size: 1.05rem;
+            }
+
+            /* Make the timeline more readable on smaller screens */
+            .timeline-node {
+                padding: 20px 40px;
+            }
+
+            .timeline-content h3 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .book-wrapper {
+                /* Switch to a single, centered column layout */
+                grid-template-columns: 1fr;
+                justify-items: center; /* Center grid items horizontally */
+                gap: 48px; /* Add more space between stacked items */
+                padding: 0 24px;
+            }
+
+            .excerpt {
+                max-width: 680px; /* Give the text a readable line length */
+                margin: 0 auto; /* Ensure it's centered in the column */
+                text-align: center; /* Center the heading */
+            }
+
+            .excerpt p {
+                text-align: justify; /* Keep paragraph text looking clean */
+            }
+
+            .book {
+                /* Ensure the book module doesn't get too wide */
+                max-width: 520px;
+            }
+        }
+
+        /* Refinements for smaller tablets and large phones */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem; /* Reduce title size */
+                letter-spacing: 1px;
+            }
+
+            .book-wrapper {
+                gap: 40px;
+            }
+
+            .timeline-section {
+                padding: 80px 0;
+            }
+
+            .vision-title {
+                font-size: 2rem;
+            }
+
+            .vision-text {
+                font-size: 1.05rem;
+            }
+        }
+
+        /* This existing rule is good, but let's make sure it also disables the cursor container */
         @media (max-width: 720px) {
             .cursor-container {
                 display: none !important;
@@ -698,7 +802,7 @@
             }
 
             .book-wrapper {
-                grid-template-columns:1fr;
+                grid-template-columns: 1fr;
                 padding: 0 18px;
             }
         }
@@ -818,92 +922,87 @@
 </footer>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const cursorContainer = document.getElementById('cursorContainer');
-        const cursorHead = document.getElementById("cursorHead");
-        window.scrollTo(0, 0);
+        // --- SMART CURSOR INITIALIZATION ---
+        // This condition checks if the device is NOT a primary touch device.
+        // It allows the cursor to run on desktops, laptops, and 360-laptops in "laptop mode".
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-        // --- Configuration ---
-        const trailSize = 15;
-        const trailSpeed = 0.2;
-
-        const trailDots = [];
-
-        // --- Mouse and Cursor Position State ---
-        const pos = {x: window.innerWidth / 2, y: window.innerHeight / 2}; // Target position
-        const mouse = pos//{x: pos.x, y: pos.y}; // Actual mouse position
-
-        // Easing function for smooth movement
-        const lerp = (a, b, n) => (1 - n) * a + n * b;
-
-        // Initialize the trail
-        function setupTrail() {
-            for (let i = 0; i < trailSize; i++) {
-                const dot = document.createElement("div");
-                dot.className = "trail-dot";
-                cursorContainer.appendChild(dot);
-
-                trailDots.push({
-                    el: dot,
-                    x: pos.x,
-                    y: pos.y,
-                });
-            }
+        if (!isTouchDevice) {
+            initializeCustomCursor();
         }
 
-        // Start the animation loop
-        function startAnimation() {
-            // Use a single animation frame loop for all updates
-            const animate = () => {
-                // Smoothly move the main cursor's target position towards the mouse
-                pos.x = lerp(pos.x, mouse.x, trailSpeed);
-                pos.y = lerp(pos.y, mouse.y, trailSpeed);
+        function initializeCustomCursor() {
+            const cursorContainer = document.getElementById('cursorContainer');
+            const cursorHead = document.getElementById("cursorHead");
+            window.scrollTo(0, 0);
 
-                // The first dot follows the main cursor position
-                trailDots[0].x = pos.x;
-                trailDots[0].y = pos.y;
-                trailDots[0].el.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+            // --- Configuration ---
+            const trailSize = 15;
+            // ... (the rest of your original cursor script, from trailSpeed down to startAnimation()) ...
+            const trailSpeed = 0.2;
 
-                // Each subsequent dot follows the one in front of it
-                for (let i = 1; i < trailSize; i++) {
-                    const prevDot = trailDots[i - 1];
-                    const currentDot = trailDots[i];
+            const trailDots = [];
 
-                    currentDot.x = lerp(currentDot.x, prevDot.x, trailSpeed);
-                    currentDot.y = lerp(currentDot.y, prevDot.y, trailSpeed);
+            const pos = {x: window.innerWidth / 2, y: window.innerHeight / 2};
+            const mouse = pos;
 
-                    // Dynamically adjust scale and opacity for a natural fade-out
-                    const scale = (trailSize - i) / trailSize;
-                    currentDot.el.style.transform = `translate(${currentDot.x}px, ${currentDot.y}px) scale(${scale})`;
-                    currentDot.el.style.opacity = scale;
+            const lerp = (a, b, n) => (1 - n) * a + n * b;
+
+            function setupTrail() {
+                for (let i = 0; i < trailSize; i++) {
+                    const dot = document.createElement("div");
+                    dot.className = "trail-dot";
+                    cursorContainer.appendChild(dot);
+                    trailDots.push({el: dot, x: pos.x, y: pos.y});
                 }
+            }
 
-                // Move the visible cursor head to the smoothed position
-                cursorHead.style.transform = `translate(${pos.x - 22}px, ${pos.y - 22}px)`;
+            function startAnimation() {
+                const animate = () => {
+                    pos.x = lerp(pos.x, mouse.x, trailSpeed);
+                    pos.y = lerp(pos.y, mouse.y, trailSpeed);
+                    trailDots[0].x = pos.x;
+                    trailDots[0].y = pos.y;
+                    trailDots[0].el.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+                    for (let i = 1; i < trailSize; i++) {
+                        const prevDot = trailDots[i - 1];
+                        const currentDot = trailDots[i];
+                        currentDot.x = lerp(currentDot.x, prevDot.x, trailSpeed);
+                        currentDot.y = lerp(currentDot.y, prevDot.y, trailSpeed);
+                        const scale = (trailSize - i) / trailSize;
+                        currentDot.el.style.transform = `translate(${currentDot.x}px, ${currentDot.y}px) scale(${scale})`;
+                        currentDot.el.style.opacity = scale;
+                    }
+                    cursorHead.style.transform = `translate(${pos.x - 22}px, ${pos.y - 22}px)`;
+                    requestAnimationFrame(animate);
+                };
+                animate();
+            }
 
-                requestAnimationFrame(animate);
-            };
+            window.addEventListener("mousemove", (e) => {
+                mouse.x = e.clientX + window.scrollX;
+                mouse.y = e.clientY + window.scrollY;
+            });
 
-            animate();
-        }
+            document.addEventListener("mouseenter", () => cursorContainer.style.opacity = "1");
+            document.addEventListener("mouseleave", () => cursorContainer.style.opacity = "0");
 
-        window.addEventListener("mousemove", (e) => {
-            mouse.x = e.clientX + window.scrollX;
-            mouse.y = e.clientY + window.scrollY;
-        });
+            const interactiveElements = document.querySelectorAll("video, .video-wrap, a");
+            interactiveElements.forEach(el => {
+                el.addEventListener("mouseenter", () => cursorHead.style.opacity = "0");
+                el.addEventListener("mouseleave", () => cursorHead.style.opacity = "1");
+            });
 
-        document.addEventListener("mouseenter", () => cursorContainer.style.opacity = "1");
-        document.addEventListener("mouseleave", () => cursorContainer.style.opacity = "0");
+            setupTrail();
+            startAnimation();
+        } // --- END of initializeCustomCursor function ---
 
-        const interactiveElements = document.querySelectorAll("video, .video-wrap, a");
-        interactiveElements.forEach(el => {
-            el.addEventListener("mouseenter", () => cursorHead.style.opacity = "0");
-            el.addEventListener("mouseleave", () => cursorHead.style.opacity = "1");
-        });
-
-        setupTrail();
-        startAnimation();
+        // The rest of your script (Intersection Observer, page exit logic, etc.)
+        // should remain OUTSIDE the initializeCustomCursor function.
 
         const timelineNodes = document.querySelectorAll('.timeline-node');
+        // ... (the rest of your script continues here) ...
+
 
         const observerOptions = {
             root: null,
