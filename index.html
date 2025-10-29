@@ -5,11 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jedidiah Ajisafe — Loading...</title>
 
-    <!-- Preload critical assets for the next page -->
+    <!--
+      PRELOAD ALL CRITICAL PAGES AND ASSETS
+      This tells the browser to fetch these files in the background
+      while the loading animation is running.
+    -->
+
+    <!-- 1. Preload the main portfolio page (already there) -->
     <link rel="preload" href="personal portfoilo.html" as="document">
+
+    <!-- 2. ADDED: Preload the About page for instant navigation -->
+    <link rel="preload" href="about.html" as="document">
+
+    <!-- 3. ADDED: Preload the Book page for a seamless transition -->
+    <link rel="preload" href="book.html" as="document">
+
+    <!-- Preload critical images and fonts for the main portfolio page -->
     <link rel="preload" href="my%20profile.jpg" as="image">
     <link rel="preload" href="book-cover.jpg" as="image">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap" as="style">
+    <link rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap"
+          as="style">
 
     <style>
         :root {
@@ -81,61 +97,80 @@
 
         /* Keyframes for the loader rotation */
         @keyframes rotate-loader {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
+
         @keyframes rotate-part-1 {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
         @keyframes rotate-part-2 {
-            0% { transform: rotate(120deg); }
-            100% { transform: rotate(480deg); }
+            0% {
+                transform: rotate(120deg);
+            }
+            100% {
+                transform: rotate(480deg);
+            }
         }
+
         @keyframes rotate-part-3 {
-            0% { transform: rotate(240deg); }
-            100% { transform: rotate(600deg); }
+            0% {
+                transform: rotate(240deg);
+            }
+            100% {
+                transform: rotate(600deg);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- The Loader Icon -->
-    <div class="loader-icon">
-        <div class="loader-part part-1"></div>
-        <div class="loader-part part-2"></div>
-        <div class="loader-part part-3"></div>
-    </div>
+<!-- The Loader Icon -->
+<div class="loader-icon">
+    <div class="loader-part part-1"></div>
+    <div class="loader-part part-2"></div>
+    <div class="loader-part part-3"></div>
+</div>
 
-    <!--
-      UPDATED JAVASCRIPT:
-      This script now waits for BOTH a minimum time AND the page load to complete.
-    -->
-    <script>
-        const portfolioURL = 'personal portfoilo.html';
+<!--
+  UPDATED JAVASCRIPT:
+  This script now waits for BOTH a minimum time AND the page load to complete.
+-->
+<script>
+    const portfolioURL = 'personal portfoilo.html';
 
-        // Task 1: Create a promise that resolves after a minimum of 1 second (1000ms).
-        const minimumTimePromise = new Promise(resolve => {
-            setTimeout(resolve, 1000);
-        });
+    // Task 1: Create a promise that resolves after a minimum of 1 second (1000ms).
+    const minimumTimePromise = new Promise(resolve => {
+        setTimeout(resolve, 1000);
+    });
 
-        // Task 2: Create a promise that resolves when all initial assets are loaded.
-        const windowLoadPromise = new Promise(resolve => {
-            window.addEventListener('load', resolve);
-        });
+    // Task 2: Create a promise that resolves when all initial assets are loaded.
+    const windowLoadPromise = new Promise(resolve => {
+        window.addEventListener('load', resolve);
+    });
 
-        // Promise.all waits for every promise in the array to be resolved.
-        // The .then() block will only run after BOTH the 1-second timer AND the
-        // asset loading have finished.
-        Promise.all([minimumTimePromise, windowLoadPromise]).then(() => {
-            // 1. Start fading out the loading screen.
-            document.body.classList.add('fading-out');
+    // Promise.all waits for every promise in the array to be resolved.
+    // The .then() block will only run after BOTH the 1-second timer AND the
+    // asset loading have finished.
+    Promise.all([minimumTimePromise, windowLoadPromise]).then(() => {
+        // 1. Start fading out the loading screen.
+        document.body.classList.add('fading-out');
 
-            // 2. Wait for the fade-out animation to complete (500ms).
-            setTimeout(() => {
-                // 3. Redirect to the portfolio page.
-                window.location.href = portfolioURL;
-            }, 500); // This duration should match your CSS transition time.
-        });
-    </script>
+        // 2. Wait for the fade-out animation to complete (500ms).
+        setTimeout(() => {
+            // 3. Redirect to the portfolio page.
+            window.location.href = portfolioURL;
+        }, 500); // This duration should match your CSS transition time.
+    });
+</script>
 </body>
 </html>
