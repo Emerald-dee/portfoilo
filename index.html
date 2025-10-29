@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- This meta tag redirects to your portfolio after 3 seconds -->
-    <link rel="preconnect" href="https://jedidiahajisafe.vercel.app/personal%20portfoilo.html" crossorigin>
-    <meta http-equiv="refresh" content="3;url=personal portfoilo.html">
-
     <title>Jedidiah Ajisafe — Loading...</title>
+
+    <!-- Preload critical assets for the next page -->
+    <link rel="preload" href="personal portfoilo.html" as="document">
+    <link rel="preload" href="my%20profile.jpg" as="image">
+    <link rel="preload" href="book-cover.jpg" as="image">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap" as="style">
+
     <style>
         :root {
             --crimson: #9B1C1C;
@@ -34,12 +36,14 @@
             justify-content: center;
             align-items: center;
             background-color: var(--black);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             opacity: 1;
-            /* Animation to fade out the page before redirecting */
-            /* Starts after 2s, lasts 1s, and stays at the final state (opacity: 0) */
-            animation: fadeOutLoader 1s var(--easing) 2s forwards;
+            /* The fade-out transition will be triggered by JavaScript */
+            transition: opacity 0.5s var(--easing);
+        }
+
+        /* A class to add when we want to start the fade-out */
+        body.fading-out {
+            opacity: 0;
         }
 
         .loader-icon {
@@ -92,13 +96,6 @@
             0% { transform: rotate(240deg); }
             100% { transform: rotate(600deg); }
         }
-
-        /* Keyframe to fade out the entire page before redirect */
-        @keyframes fadeOutLoader {
-            to {
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
@@ -108,5 +105,37 @@
         <div class="loader-part part-2"></div>
         <div class="loader-part part-3"></div>
     </div>
+
+    <!--
+      UPDATED JAVASCRIPT:
+      This script now waits for BOTH a minimum time AND the page load to complete.
+    -->
+    <script>
+        const portfolioURL = 'personal portfoilo.html';
+
+        // Task 1: Create a promise that resolves after a minimum of 1 second (1000ms).
+        const minimumTimePromise = new Promise(resolve => {
+            setTimeout(resolve, 1000);
+        });
+
+        // Task 2: Create a promise that resolves when all initial assets are loaded.
+        const windowLoadPromise = new Promise(resolve => {
+            window.addEventListener('load', resolve);
+        });
+
+        // Promise.all waits for every promise in the array to be resolved.
+        // The .then() block will only run after BOTH the 1-second timer AND the
+        // asset loading have finished.
+        Promise.all([minimumTimePromise, windowLoadPromise]).then(() => {
+            // 1. Start fading out the loading screen.
+            document.body.classList.add('fading-out');
+
+            // 2. Wait for the fade-out animation to complete (500ms).
+            setTimeout(() => {
+                // 3. Redirect to the portfolio page.
+                window.location.href = portfolioURL;
+            }, 500); // This duration should match your CSS transition time.
+        });
+    </script>
 </body>
 </html>
