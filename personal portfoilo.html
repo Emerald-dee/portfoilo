@@ -781,7 +781,9 @@
     <i class="fas fa-arrow-up"></i>
 </button>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    // This function initializes all the dynamic parts of your page.
+    // We need to be able to re-run it every time we load new content.
+    function initializePageScripts() {
         // Hero parallax scroll effect
         const hero = document.getElementById('hero');
         if (hero) {
@@ -790,8 +792,8 @@
                 const offset = Math.min(60, scrollY * 0.08);
                 hero.style.transform = `translateY(${offset}px)`;
             };
-            window.addEventListener('scroll', onScroll, {passive: true});
-            onScroll(); // Initial call
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
         }
 
         // Section intersection observer for fade-in effect
@@ -804,7 +806,7 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, {threshold: 0.12});
+            }, { threshold: 0.12 });
             sections.forEach(section => observer.observe(section));
         }
 
@@ -829,85 +831,140 @@
         // Book icon click animation and navigation
         const enterWorldTome = document.querySelector('.enter-world-tome');
         if (enterWorldTome) {
-            enterWorldTome.addEventListener('click', (e) => {
-                e.preventDefault();
-                const href = enterWorldTome.dataset.href;
-                if (!href) return;
-
-                document.querySelector('.container').classList.add('fade-out-transition');
-
-                const rect = enterWorldTome.getBoundingClientRect();
-                const top = rect.top + (rect.height / 2);
-                const left = rect.left + (rect.width / 2);
-
-                const animatedTome = enterWorldTome.cloneNode(true);
-                animatedTome.style.position = 'fixed';
-                animatedTome.style.top = `${top}px`;
-                animatedTome.style.left = `${left}px`;
-                animatedTome.style.margin = '0';
-                animatedTome.style.transform = 'translate(-50%, -50%)';
-
-                document.body.appendChild(animatedTome);
-                enterWorldTome.style.opacity = '0';
-                animatedTome.classList.add('swallow-screen');
-
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 1500);
-            });
+            enterWorldTome.addEventListener('click', handleLinkClick); // Use our new handler
         }
 
         // Action prompt to trigger book icon click
         const actionPrompt = document.querySelector('.action-prompt');
         if (actionPrompt) {
-            const triggerBookClick = () => {
-                const bookIcon = document.querySelector('.enter-world-tome');
-                if (bookIcon) {
-                    bookIcon.click();
-                }
-            };
-
-            actionPrompt.addEventListener('click', triggerBookClick);
+            actionPrompt.addEventListener('click', () => document.querySelector('.enter-world-tome')?.click());
             actionPrompt.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    triggerBookClick();
-                }
+                if (e.key === 'Enter') document.querySelector('.enter-world-tome')?.click();
             });
         }
 
         // Scroll-to-top button functionality
         const scrollToTopBtn = document.getElementById('scrollToTopBtn');
         if (scrollToTopBtn) {
-            const toggleVisibility = () => {
-                scrollToTopBtn.classList.toggle('visible', window.scrollY > 400);
-            };
-            const scrollToTop = () => {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            };
-            window.addEventListener('scroll', toggleVisibility, {passive: true});
+            const toggleVisibility = () => scrollToTopBtn.classList.toggle('visible', window.scrollY > 400);
+            const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.addEventListener('scroll', toggleVisibility, { passive: true });
             scrollToTopBtn.addEventListener('click', scrollToTop);
         }
+    }
+
+    // =================================================================
+    // The Core Seamless Navigation Logic
+    // =================================================================
+    async function handleLinkClick(e) {
+        e.preventDefault();
+        const link = e.currentTarget;
+        const href = link.dataset.href || link.href;
+
+        // Ignore links we don't want to handle
+        if (!href || link.target === '_blank' || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+            return;
+        }
+
+        const container = document.querySelector('.container');
+        const isCustomBookAnimation = link.classList.contains('enter-world-tome');
+
+        // 1. Trigger the fade-out/custom animation
+        container.classList.add('fade-out-transition');
+
+        if (isCustomBookAnimation) {
+             const rect = link.getBoundingClientRect();
+             const top = rect.top + (rect.height / 2);
+             const left = rect.left + (rect.width / 2);
+             const animatedTome = link.cloneNode(true);
+             animatedTome.style.position = 'fixed';
+             animatedTome.style.top = `${top}px`;
+             animatedTome.style.left = `${left}px`;
+             animatedTome.style.margin = '0';
+             animatedTome.style.transform = 'translate(-50%, -50%)';
+             document.body.appendChild(animatedTome);
+             link.style.opacity = '0';
+             animatedTome.classList.add('swallow-screen');
+        }
+
+        try {
+            // 2. Fetch the new page's content in the background
+            const response = await fetch(href);
+            const newPageHtml = await response.text();
+
+            // Use a small delay to ensure the animation is smooth
+            await new Promise(resolve => setTimeout(resolve, isCustomBookAnimation ? 1500 : 700));
+
+            // 3. Parse the new HTML and extract the new content and title
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(newPageHtml, 'text/html');
+            const newContainer = doc.querySelector('.container');
+            const newTitle = doc.querySelector('title').textContent;
+
+            // 4. Replace the content on the current page
+            if (newContainer) {
+                container.innerHTML = newContainer.innerHTML;
+                document.title = newTitle;
+                window.scrollTo(0, 0); // Scroll to top of new content
+
+                // 5. Update the browser URL without a page reload
+                history.pushState({}, newTitle, href);
+
+                // 6. Re-initialize all scripts for the new content
+                initializePageScripts();
+
+                // Add the page-load animation class to the new content
+                container.classList.remove('fade-out-transition');
+            } else {
+                // Fallback for pages that don't have a .container
+                window.location.href = href;
+            }
+
+        } catch (error) {
+            console.error('Failed to fetch page:', error);
+            window.location.href = href; // Fallback on error
+        }
+    }
+
+    // Attach the handler to all links on initial page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const allLinks = document.querySelectorAll('a');
+        allLinks.forEach(link => {
+            link.addEventListener('click', handleLinkClick);
+        });
+
+        initializePageScripts();
     });
 
-    // Handle browser back/forward navigation (bf-cache)
-    window.addEventListener('pageshow', (event) => {
-        if (event.persisted) {
-            const container = document.querySelector('.container');
-            if (container) {
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', async () => {
+        const container = document.querySelector('.container');
+        container.classList.add('fade-out-transition');
+
+        try {
+            const response = await fetch(location.href);
+            const newPageHtml = await response.text();
+
+            await new Promise(resolve => setTimeout(resolve, 700));
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(newPageHtml, 'text/html');
+            const newContainer = doc.querySelector('.container');
+            const newTitle = doc.querySelector('title').textContent;
+
+            if (newContainer) {
+                container.innerHTML = newContainer.innerHTML;
+                document.title = newTitle;
+                initializePageScripts();
                 container.classList.remove('fade-out-transition');
+            } else {
+                location.reload();
             }
-
-            const enterWorldTome = document.querySelector('.enter-world-tome');
-            if (enterWorldTome) {
-                enterWorldTome.style.opacity = '1';
-            }
-
-            const animatedClone = document.querySelector('.swallow-screen');
-            if (animatedClone) {
-                animatedClone.remove();
-            }
+        } catch (error) {
+            location.reload();
         }
     });
+
 </script>
 </body>
 </html>
